@@ -568,6 +568,37 @@ class _ChannelImpl implements Channel {
     return opCompleter.future;
   }
 
+  @Deprecated('This method provides access to deprecated message arguments "autoDelete" and "internal".')
+  @override
+  Future<Exchange> exchangeLegacy(String name, ExchangeType type,
+      {bool passive = false,
+        bool durable = false,
+        bool noWait = false,
+        bool autoDelete = false,
+        bool internal = false,
+        Map<String, Object>? arguments}) {
+    if (name.isEmpty) {
+      throw ArgumentError("The name of the exchange cannot be empty");
+    }
+    ExchangeDeclare exchangeRequest = ExchangeDeclare()
+      ..reserved_1 = 0
+      ..exchange = name
+      ..type = type.value
+      ..passive = passive
+      ..durable = durable
+      ..reserved_2 = autoDelete
+      ..reserved_3 = internal
+      ..noWait = noWait
+      ..arguments = arguments;
+
+    Completer<Exchange> opCompleter = Completer<Exchange>();
+    writeMessage(exchangeRequest,
+        completer: opCompleter,
+        futurePayload: _ExchangeImpl(this, name, type),
+        noWait: noWait);
+    return opCompleter.future;
+  }
+
   @override
   StreamSubscription<BasicReturnMessage> basicReturnListener(
           void Function(BasicReturnMessage message) onData,
