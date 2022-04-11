@@ -49,6 +49,24 @@ abstract class Channel {
       bool noWait = false,
       Map<String, Object> arguments});
 
+  /// Define an exchange named [name] of type [type] and return a [Future<Exchange>] when the exchange is allocated.
+  ///
+  /// The [passive] flag can be used to test if the exchange exists. When [passive] is set to true, the
+  /// returned future will fail with a [ExchangeNotFoundException] if the exchange does not exist.
+  ///
+  /// The [durable] flag will enable the exchange to persist across server restarts.
+  ///
+  /// [autoDelete] and [internal] are deprecated in AMQP 0-9-1 but will be transmitted.
+
+  @Deprecated('This method provides access to deprecated message arguments "autoDelete" and "internal".')
+  Future<Exchange> exchangeLegacy(String name, ExchangeType type,
+      {bool passive = false,
+        bool durable = false,
+        bool noWait = false,
+        bool autoDelete = false,
+        bool internal = false,
+        Map<String, Object>? arguments});
+
   /// Setup the [prefetchSize] and [prefetchCount] QoS parameters. The value
   /// of the [global] flag is interpreted differently between the AMQP 0-9-1
   /// spec and RabbitMQ.
