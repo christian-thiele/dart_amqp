@@ -4,8 +4,14 @@ abstract class Channel {
   /// Close the channel, abort any pending operations and return a [Future<Channel>] to be completed
   /// when the channel is closed.
   ///
-  /// After closing the channel any attempt to send a message over it will cause a [StateError]
+  /// After closing the channel any attempt to send a message over it will cause a [StateError].
   Future<Channel> close();
+
+  /// Return true if the channel has not been closed by the client or the
+  /// server yet.
+  ///
+  /// If isOpen is false, any attempt to send a message over it will cause a [StateError].
+  bool get isOpen;
 
   /// Define a queue named [name]. Returns a [Future<Queue>] to be completed when the queue is allocated.
   ///

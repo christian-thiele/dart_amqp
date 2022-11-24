@@ -45,6 +45,9 @@ class _ChannelImpl implements Channel {
     }
   }
 
+  @override
+  bool get isOpen => _channelClosed == null;
+
   void writeProtocolHeader() {
     _pendingOperations.add(_client._connected!);
     _pendingOperationPayloads.add(this);
